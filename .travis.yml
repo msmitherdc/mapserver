@@ -43,6 +43,20 @@ compiler:
   - clang
 
 before_install:
+  - curl -L -o instantclient-sdk-linux.x64-11.2.0.4.0.zip "$INSTANT_SDK"
+  - curl -L -o instantclient-linux.x64-11.2.0.4.0.zip "$INSTANT_CLIENT"
+  - unzip instantclient-sdk-linux.x64-11.2.0.4.0.zip
+  - unzip instantclient-linux.x64-11.2.0.4.0.zip
+  - cd instantclient_11_2
+  - ln -s libclntsh.so.11.1 libclntsh.so
+  - ln -s libocci.so.11.1 libocci.so
+  - ln -s . lib
+  - cd ..
+  - sudo mv instantclient_11_2 /usr/.
+  - sudo apt-get install libaio1
+  - export ORACLE_HOME=/usr/instantclient_11_2/
+  - export PATH=$PATH:/usr/instantclient_11_2/
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/instantclient_11_2/
   - mkdir tmp
   - cd tmp
   - wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.38.tar.bz2
@@ -65,23 +79,6 @@ before_install:
   - cd ..
   - touch maplexer.l
   - touch mapparser.y
-
-install:
-  - curl -L -o instantclient-sdk-linux.x64-11.2.0.4.0.zip "$INSTANT_SDK"
-  - curl -L -o instantclient-linux.x64-11.2.0.4.0.zip "$INSTANT_CLIENT"
-  - unzip instantclient-sdk-linux.x64-11.2.0.4.0.zip
-  - unzip instantclient-linux.x64-11.2.0.4.0.zip
-  - cd instantclient_11_2
-  - ln -s libclntsh.so.11.1 libclntsh.so
-  - ln -s libocci.so.11.1 libocci.so
-  - ln -s . lib
-  - cd ..
-  - sudo mv instantclient_11_2 /usr/.
-
-before_script:
-  - export ORACLE_HOME=/usr/instantclient_11_2/
-  - export PATH=$PATH:/usr/instantclient_11_2/
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/instantclient_11_2/
 
 script:
   - ./run-test-suite.sh
