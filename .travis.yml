@@ -76,11 +76,12 @@ install:
   - ln -s libocci.so.11.1 libocci.so
   - ln -s . lib
   - cd ..
+  - sudo mv instantclient_11_2 /usr/.
 
 before_script:
-  - export ORACLE_HOME=/home/travis/build/msmitherdc/mapserver/instantclient_11_2/
-  - export PATH=$PATH:/home/travis/build/msmitherdc/mapserver/instantclient_11_2/
-  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/travis/build/msmitherdc/mapserver/instantclient_11_2/
+  - export ORACLE_HOME=/usr/instantclient_11_2/
+  - export PATH=$PATH:/usr/instantclient_11_2/
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/instantclient_11_2/
 
 script:
   - ./run-test-suite.sh
