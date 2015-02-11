@@ -62,8 +62,8 @@ before_install:
   - sudo sh -c "apt-get update -qq ; true"
   - sudo apt-get install -qq -y --force-yes -d oracle-xe-client:i386
   - sudo apt-get install -qq -y --force-yes libaio:i386
-  - source /usr/lib/oracle/xe/app/oracle/product/10.2.0/client/bin/oracle_env.sh
-  - cat /usr/lib/oracle/xe/app/oracle/product/10.2.0/client/bin/oracle_env.sh
+  - ls /usr/lib/oracle/xe/app/oracle/product/10.2.0/client/bin/
+ # - cat /usr/lib/oracle/xe/app/oracle/product/10.2.0/client/bin/oracle_env.sh
   - sudo pip install git+git://github.com/tbonfort/cpp-coveralls.git@extensions
   - cd msautotest
   - ./create_postgis_test_data.sh
