@@ -58,10 +58,13 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install bison flex python-lxml libfribidi-dev swig cmake librsvg2-dev colordiff postgis postgresql-9.1 postgresql-9.1-postgis-2.1 postgresql-9.1-postgis-2.1-scripts libpq-dev libpng12-dev libjpeg-dev libgif-dev libgeos-dev libgd2-xpm-dev libfreetype6-dev libfcgi-dev libcurl4-gnutls-dev libcairo2-dev libgdal1-dev libproj-dev libxml2-dev python-dev php5-dev libexempi-dev lcov lftp
   - sudo bash -c 'echo "deb https://oss.oracle.com/debian/ unstable main non-free" >/etc/apt/sources.list.d/oracle.list'
-  - wget -q https://oss.oracle.com/el4/RPM-GPG-KEY-oracle -O- | sudo apt-key add -
+  - wget -q https://oss.oracle.com/el6/RPM-GPG-KEY-oracle -O- | sudo apt-key add -
   - sudo apt-get update -qq -y
-  - sudo apt-get install -qq -y  -d oracle-xe-client:i386
-
+  - sudo apt-get install oracle-xe-client
+  - if [ -e /usr/lib/oracle/xe/app/oracle/product/10.2.0/client/bin/oracle_env.sh ]; 
+  - then
+  -   source /usr/lib/oracle/xe/app/oracle/product/10.2.0/client/bin/oracle_env.sh
+  - fi
   - sudo pip install git+git://github.com/tbonfort/cpp-coveralls.git@extensions
   - cd msautotest
   - ./create_postgis_test_data.sh
