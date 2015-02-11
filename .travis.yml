@@ -64,11 +64,12 @@ before_install:
   - curl -L -o instantclient-linux.x64-11.2.0.4.0.zip "$INSTANT_CLIENT"
   - unzip instantclient-sdk-linux.x64-11.2.0.4.0.zip
   - unzip instantclient-linux.x64-11.2.0.4.0.zip
+  - cd instantclient_11_2
   - ln -s libclntsh.so.11.1 libclntsh.so
   - ln -s libocci.so.11.1 libocci.so
   - ln -s . lib
-  - cd ..
-  - export ORACLE_HOME=instantclient
+  - cd ../..
+  - export ORACLE_HOME=instantclient/instantclient_11_2/
   - sudo pip install git+git://github.com/tbonfort/cpp-coveralls.git@extensions
   - cd msautotest
   - ./create_postgis_test_data.sh
