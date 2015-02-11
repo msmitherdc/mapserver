@@ -60,7 +60,8 @@ before_install:
   - sudo bash -c 'echo "deb https://oss.oracle.com/debian/ unstable main non-free" >/etc/apt/sources.list.d/oracle.list'
   - wget -q https://oss.oracle.com/el4/RPM-GPG-KEY-oracle -O- | sudo apt-key add -
   - sudo sh -c "apt-get update -qq ; true"
-  - sudo apt-get install -qq -y --force-yes -d oracle-xe-client.i386
+  - sudo apt-get install -qq -y --force-yes -d oracle-xe-client:i386
+  - sudo apt-get install -qq -y --force-yes libaio:i386
   - if [ -e /usr/lib/oracle/xe/app/oracle/product/10.2.0/client/bin/oracle_env.sh ]; 
   - then
   -   source /usr/lib/oracle/xe/app/oracle/product/10.2.0/client/bin/oracle_env.sh
