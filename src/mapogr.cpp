@@ -1334,6 +1334,10 @@ static msOGRFileInfo *msOGRFileOpen(layerObj *layer, const char *connection)
             "and/or not a Spatialite enabled db\n");
       }
     }
+  } else if (strcmp(name, "Parquet") == 0) {
+    psInfo->dialect = "Parquet";
+    // todo: Parquet not yet tested
+  
   } else if (strcmp(name, "PostgreSQL") == 0) {
     psInfo->dialect = "PostgreSQL";
     // todo: PostgreSQL not yet tested
@@ -1975,6 +1979,8 @@ static char *msOGRGetToken(layerObj *layer, tokenListNodeObjPtr *node) {
         SQLtype = "REAL";
       else if (EQUAL(info->dialect, "PostgreSQL"))
         SQLtype = "double precision";
+      else if (EQUAL(info->dialect, "Parquet"))
+        SQLtype = "double precision";
       snprintf(out, nOutSize, "CAST(%s AS %s)", stresc, SQLtype);
     }
     msFree(stresc);
@@ -2237,7 +2243,9 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
     if (psInfo->dialect && sql && *sql != '\0' &&
         (EQUAL(psInfo->dialect, "Spatialite") ||
          EQUAL(psInfo->dialect, "GPKG") ||
-         EQUAL(psInfo->dialect, "PostgreSQL"))) {
+         EQUAL(psInfo->dialect, "PostgreSQL") ||
+         EQUAL(psInfo->dialect, "Parquet")))
+         {
       if (filter)
         filter = msStringConcatenate(filter, " AND ");
       filter = msStringConcatenate(filter, "(");
@@ -2253,7 +2261,8 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
 
     // use spatial index
     if (psInfo->dialect && bIsValidRect) {
-      if (EQUAL(psInfo->dialect, "PostgreSQL")) {
+      if ((EQUAL(psInfo->dialect, "PostgreSQL"))|| 
+          (EQUAL(psInfo->dialect, "Parquet"))){
         if (filter)
           filter = msStringConcatenate(filter, " AND");
         const char *col =
@@ -3685,7 +3694,8 @@ static int msOGRTranslateMsExpressionToOGRSQL(layerObj *layer,
     sql = msStringConcatenate(sql, "\"");
     sql = msStringConcatenate(sql, filteritem);
     sql = msStringConcatenate(sql, "\"");
-    if (EQUAL(info->dialect, "PostgreSQL")) {
+    if ((EQUAL(psInfo->dialect, "PostgreSQL"))|| 
+        (EQUAL(psInfo->dialect, "Parquet"))) {
       sql = msStringConcatenate(sql, " ~ ");
     } else {
       sql = msStringConcatenate(sql, " LIKE ");
