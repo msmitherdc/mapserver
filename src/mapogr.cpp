@@ -1336,6 +1336,9 @@ static msOGRFileInfo *msOGRFileOpen(layerObj *layer, const char *connection)
     }
   } else if (strcmp(name, "Parquet") == 0) {
     psInfo->dialect = "Parquet";
+    if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+      msDebug("msOGRFileInfo: Yes its parquet");
+
     // todo: Parquet not yet tested
   
   } else if (strcmp(name, "PostgreSQL") == 0) {
@@ -2278,6 +2281,8 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
         filter = msStringConcatenate(filter, points);
         msFree(points);
         filter = msStringConcatenate(filter, "))");
+        if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+            msDebug("msOGRFileWhichShapes: Applying Filter for Parquet");
       } else if (psInfo->dialect &&
                  (EQUAL(psInfo->dialect, "Spatialite") ||
                   EQUAL(psInfo->dialect, "GPKG")) &&
