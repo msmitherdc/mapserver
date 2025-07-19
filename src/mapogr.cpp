@@ -3694,8 +3694,8 @@ static int msOGRTranslateMsExpressionToOGRSQL(layerObj *layer,
     sql = msStringConcatenate(sql, "\"");
     sql = msStringConcatenate(sql, filteritem);
     sql = msStringConcatenate(sql, "\"");
-    if ((EQUAL(psInfo->dialect, "PostgreSQL"))|| 
-        (EQUAL(psInfo->dialect, "Parquet"))) {
+    if ((EQUAL(info->dialect, "PostgreSQL"))|| 
+        (EQUAL(info->dialect, "Parquet"))) {
       sql = msStringConcatenate(sql, " ~ ");
     } else {
       sql = msStringConcatenate(sql, " LIKE ");
