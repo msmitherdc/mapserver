@@ -2177,6 +2177,10 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
       if (layer->numitems > 0)
         select = msStringConcatenate(select, ", ");
       pszGeometryColumn = OGR_L_GetGeometryColumn(psInfo->hLayer);
+
+      if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+            msDebug("msOGRFileWhichShapes: The geom col is %s\n", pszGeometryColumn);
+
       if (pszGeometryColumn != NULL && pszGeometryColumn[0] != '\0') {
         char *escaped = msOGRGetQuotedItem(layer, pszGeometryColumn);
         select = msStringConcatenate(select, escaped);
@@ -2222,7 +2226,8 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
           filter, msLayerGetProcessingKey(layer, "NATIVE_FILTER"));
       filter = msStringConcatenate(filter, ")");
     }
-
+    if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+            msDebug("msOGRFileWhichShapes: Setting spatial filter\n");
     /* ------------------------------------------------------------------
      * Set Spatial filter... this may result in no features being returned
      * if layer does not overlap current view.
@@ -2239,7 +2244,8 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
       bIsValidRect = true;
     }
     psInfo->rect = rect;
-
+    if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+            msDebug("msOGRFileWhichShapes: The rect is defined\n");
     bool bSpatialiteOrGPKGAddOrderByFID = false;
 
     const char *sql = layer->filter.native_string;
