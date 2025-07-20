@@ -1337,7 +1337,7 @@ static msOGRFileInfo *msOGRFileOpen(layerObj *layer, const char *connection)
   } else if (strcmp(name, "Parquet") == 0) {
     psInfo->dialect = "Parquet";
     if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
-      msDebug("msOGRFileInfo: Yes its parquet");
+      msDebug("msOGRFileInfo: Yes its parquet\n");
 
     // todo: Parquet not yet tested
   
@@ -2263,6 +2263,8 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
     }
 
     // use spatial index
+    if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+            msDebug("msOGRFileWhichShapes: The dialect is %s\n", psInfo->dialect);
     if (psInfo->dialect && bIsValidRect) {
       if ((EQUAL(psInfo->dialect, "PostgreSQL"))|| 
           (EQUAL(psInfo->dialect, "Parquet"))){
@@ -2282,7 +2284,7 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
         msFree(points);
         filter = msStringConcatenate(filter, "))");
         if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
-            msDebug("msOGRFileWhichShapes: Applying Filter for Parquet");
+            msDebug("msOGRFileWhichShapes: Applying Filter for Parquet\n");
       } else if (psInfo->dialect &&
                  (EQUAL(psInfo->dialect, "Spatialite") ||
                   EQUAL(psInfo->dialect, "GPKG")) &&
