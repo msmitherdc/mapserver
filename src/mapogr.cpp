@@ -1336,9 +1336,6 @@ static msOGRFileInfo *msOGRFileOpen(layerObj *layer, const char *connection)
     }
   } else if (strcmp(name, "Parquet") == 0) {
     psInfo->dialect = "Parquet";
-    if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
-      msDebug("msOGRFileInfo: Yes its parquet\n");
-
     // todo: Parquet not yet tested
   
   } else if (strcmp(name, "PostgreSQL") == 0) {
@@ -1400,6 +1397,9 @@ static msOGRFileInfo *msOGRFileOpen(layerObj *layer, const char *connection)
 
   if (psInfo->dialect != NULL && EQUAL(psInfo->dialect, "Spatialite"))
     msOGRFileOpenSpatialite(layer, pszLayerDef, psInfo);
+
+  if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+      msDebug("msOGRFileInfo: Yes its %s\n", psInfo->dialect);
 
   return psInfo;
 }
@@ -2134,6 +2134,9 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
                "msOGRFileWhichShapes()");
     return (MS_FAILURE);
   }
+
+  if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+      msDebug("msOGRFileWhichShapes: Yes its %s\n", psInfo->dialect);
 
   char *select = (psInfo->pszSelect) ? msStrdup(psInfo->pszSelect) : NULL;
   const rectObj rectInvalid = MS_INIT_INVALID_RECT;
