@@ -2279,7 +2279,7 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
     if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
             msDebug("msOGRFileWhichShapes: The dialect is %s\n", psInfo->dialect);
     if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
-            msDebug("msOGRFileWhichShapes: rect is  %s\n", bIsValidRect);
+            msDebug("msOGRFileWhichShapes: rect is  %d\n", bIsValidRect);
     if (psInfo->dialect && bIsValidRect) {
       if ((EQUAL(psInfo->dialect, "PostgreSQL"))|| 
           (EQUAL(psInfo->dialect, "Parquet"))){
@@ -2551,7 +2551,7 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
     ACQUIRE_OGR_LOCK;
 
     if (layer->debug)
-      msDebug("msOGRFileWhichShapes: geom type %s\n", OGR_L_GetGeomType(psInfo->hLayer));
+      msDebug("msOGRFileWhichShapes: geom type %u\n", OGR_L_GetGeomType(psInfo->hLayer));
     
     if (OGR_L_GetGeomType(psInfo->hLayer) != wkbNone && bIsValidRect) {
       if (rect.minx == rect.maxx && rect.miny == rect.maxy) {
