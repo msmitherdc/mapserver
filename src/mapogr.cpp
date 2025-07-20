@@ -2278,6 +2278,8 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
     // use spatial index
     if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
             msDebug("msOGRFileWhichShapes: The dialect is %s\n", psInfo->dialect);
+    if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
+            msDebug("msOGRFileWhichShapes: rect is  %s\n", bIsValidRect);
     if (psInfo->dialect && bIsValidRect) {
       if ((EQUAL(psInfo->dialect, "PostgreSQL"))|| 
           (EQUAL(psInfo->dialect, "Parquet"))){
@@ -2499,11 +2501,12 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
         OGR_G_AddGeometryDirectly(hGeom, hRing);
       }
 
-      if (layer->debug >= MS_DEBUGLEVEL_DEBUG) {
+      if (layer->debug >= MS_DEBUGLEVEL_VVV) {
         msDebug("msOGRFileWhichShapes: Setting spatial filter to %.15g %.15g "
                 "%.15g %.15g\n",
                 rect.minx, rect.miny, rect.maxx, rect.maxy);
       }
+    }
 
     psInfo->hLayer = OGR_DS_ExecuteSQL(psInfo->hDS, select, hGeom, NULL);
     psInfo->nLayerIndex = -1;
@@ -2525,11 +2528,8 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
 
     // case of 1) GetLayer + SetFilter
 
-    if (layer->debug >= MS_DEBUGLEVEL_DEBUG) {
-        msDebug("msOGRFileWhichShapes: GetLayer + SetFilter: Setting spatial filter to %.15g %.15g "
-                "%.15g %.15g\n",
-                rect.minx, rect.miny, rect.maxx, rect.maxy);
-    }
+    if (layer->debug)
+      msDebug("msOGRFileWhichShapes: SetFilter\n");
     char *pszOGRFilter = NULL;
     if (msLayerGetProcessingKey(layer, "NATIVE_FILTER") != NULL) {
       pszOGRFilter = msStringConcatenate(pszOGRFilter, "(");
