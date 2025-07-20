@@ -2551,7 +2551,7 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
     ACQUIRE_OGR_LOCK;
 
     if (layer->debug)
-      msDebug("msOGRFileWhichShapes: geom type %s, valid rect %s\n", OGR_L_GetGeomType(psInfo->hLayer), bIsValidRect);
+      msDebug("msOGRFileWhichShapes: geom type %s\n", OGR_L_GetGeomType(psInfo->hLayer));
     
     if (OGR_L_GetGeomType(psInfo->hLayer) != wkbNone && bIsValidRect) {
       if (rect.minx == rect.maxx && rect.miny == rect.maxy) {
