@@ -2499,12 +2499,11 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
         OGR_G_AddGeometryDirectly(hGeom, hRing);
       }
 
-      if (layer->debug >= MS_DEBUGLEVEL_VVV) {
+      if (layer->debug >= MS_DEBUGLEVEL_DEBUG) {
         msDebug("msOGRFileWhichShapes: Setting spatial filter to %.15g %.15g "
                 "%.15g %.15g\n",
                 rect.minx, rect.miny, rect.maxx, rect.maxy);
       }
-    }
 
     psInfo->hLayer = OGR_DS_ExecuteSQL(psInfo->hDS, select, hGeom, NULL);
     psInfo->nLayerIndex = -1;
@@ -2530,6 +2529,7 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
         msDebug("msOGRFileWhichShapes: GetLayer + SetFilter: Setting spatial filter to %.15g %.15g "
                 "%.15g %.15g\n",
                 rect.minx, rect.miny, rect.maxx, rect.maxy);
+    }
     char *pszOGRFilter = NULL;
     if (msLayerGetProcessingKey(layer, "NATIVE_FILTER") != NULL) {
       pszOGRFilter = msStringConcatenate(pszOGRFilter, "(");
