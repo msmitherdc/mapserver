@@ -2550,6 +2550,9 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
 
     ACQUIRE_OGR_LOCK;
 
+    if (layer->debug)
+      msDebug("msOGRFileWhichShapes: geom type %s, valid rect %s\n", OGR_L_GetGeomType(psInfo->hLayer), bIsValidRect);
+    
     if (OGR_L_GetGeomType(psInfo->hLayer) != wkbNone && bIsValidRect) {
       if (rect.minx == rect.maxx && rect.miny == rect.maxy) {
         OGRGeometryH hSpatialFilterPoint = OGR_G_CreateGeometry(wkbPoint);
