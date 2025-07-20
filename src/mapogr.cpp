@@ -2153,7 +2153,11 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
        (psInfo->bPaging && layer->maxfeatures > 0))) {
 
     const bool bHasGeometry = OGR_L_GetGeomType(psInfo->hLayer) != wkbNone;
-
+    if (layer->debug >= MS_DEBUGLEVEL_DEBUG) {
+        msDebug("msOGRFileWhichShapes: bIsOKForSQLCompose: Setting spatial filter to %.15g %.15g "
+                "%.15g %.15g\n",
+                rect.minx, rect.miny, rect.maxx, rect.maxy);
+      }
     if (psInfo->nLayerIndex == -1 && select == NULL) {
       select = msStrdup(psInfo->pszLayerDef);
       /* If nLayerIndex == -1 then the layer is an SQL result ... free it */
@@ -2182,7 +2186,7 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
       pszGeometryColumn = OGR_L_GetGeometryColumn(psInfo->hLayer);
 
       if (layer->debug >= MS_DEBUGLEVEL_DEBUG)
-            msDebug("msOGRFileWhichShapes: The geom col is %s\n", pszGeometryColumn);
+            msDebug("msOGRFileWhichShapes: sql type The geom col is %s\n", pszGeometryColumn);
 
       if (pszGeometryColumn != NULL && pszGeometryColumn[0] != '\0') {
         char *escaped = msOGRGetQuotedItem(layer, pszGeometryColumn);
@@ -2522,6 +2526,10 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
 
     // case of 1) GetLayer + SetFilter
 
+    if (layer->debug >= MS_DEBUGLEVEL_DEBUG) {
+        msDebug("msOGRFileWhichShapes: GetLayer + SetFilter: Setting spatial filter to %.15g %.15g "
+                "%.15g %.15g\n",
+                rect.minx, rect.miny, rect.maxx, rect.maxy);
     char *pszOGRFilter = NULL;
     if (msLayerGetProcessingKey(layer, "NATIVE_FILTER") != NULL) {
       pszOGRFilter = msStringConcatenate(pszOGRFilter, "(");
@@ -2570,7 +2578,7 @@ static int msOGRFileWhichShapes(layerObj *layer, rectObj rect,
         OGR_G_DestroyGeometry(hSpatialFilterPolygon);
       }
 
-      if (layer->debug >= MS_DEBUGLEVEL_VVV) {
+      if (layer->debug >= MS_DEBUGLEVEL_DEBUG) {
         msDebug("msOGRFileWhichShapes: Setting spatial filter to %.15g %.15g "
                 "%.15g %.15g\n",
                 rect.minx, rect.miny, rect.maxx, rect.maxy);
